@@ -1,7 +1,7 @@
 // Import CSS
 import "./index.css";
 // Import API functions
-import { getUsers } from "./api/userApi";
+import { getUsers, deleteUser } from "./api/userApi";
 
 // Populate table of users via API call
 getUsers().then((result) => {
@@ -19,4 +19,18 @@ getUsers().then((result) => {
 	});
 
 	document.getElementById("users").innerHTML = usersBody;
+
+	// Create onclick handler for all delete links
+	const deleteLinks = global.document.getElementsByClassName("deleteUser");
+
+	// Create an array from deletelinks and create on click event
+	Array.from(deleteLinks, (link) => {
+		link.onclick = function (event) {
+			event.preventDefault();
+			const element = event.target;
+			deleteUser(element.attributes["data-id"].value);
+			const row = element.parentNode.parentNode;
+			row.parentNode.removeChild(row);
+		};
+	});
 });
